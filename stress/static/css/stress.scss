@@ -1,0 +1,205 @@
+body {
+    overflow:scroll;
+}
+.topcontainer {
+    margin-top: 2%;
+}
+
+.bigtitle {
+    text-align: center;
+
+    .bigtitle-text {
+        font-size: 50px;
+        line-height: 60px;
+    }
+
+    .subtitle {
+        margin-top: 30px;
+    }
+}
+
+.content-container {
+    margin-top: 2%;
+}
+
+#load-workload-input {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+}
+
+#settings-form {
+    z-index:13;
+    margin-top: 5px;
+
+    .control-label[rel=tooltip] {
+        cursor: help;
+    }
+}
+
+#qps-button-container {
+    .qps-button {
+        cursor: pointer;
+    }
+}
+
+#notifications {
+    .notification {
+        max-width: 200px;
+        pointer-events: auto;
+    }
+}
+
+#console {
+    position:relative;
+    top:0;
+    left:0;
+    width:100%;
+    height:200px;
+    background-color:black;
+
+    /* The inner console element. */
+    .jqconsole {
+        padding: 10px;
+    }
+    /* The cursor. */
+    .jqconsole-cursor {
+        background-color: gray;
+    }
+    /* The cursor color when the console looses focus. */
+    .jqconsole-blurred .jqconsole-cursor {
+        background-color: #666;
+    }
+    /* The current prompt text color */
+    .jqconsole-prompt {
+        color: #111;
+    }
+    /* The command history */
+    .jqconsole-old-prompt {
+        color: #555;
+        font-weight: normal;
+    }
+    /* The text color when in input mode. */
+    .jqconsole-input {
+        color: #dd0;
+    }
+    /* Previously entered input. */
+    .jqconsole-old-input {
+        color: #bb0;
+        font-weight: normal;
+    }
+    /* The text color of the output. */
+    .jqconsole-output {
+        color: #555;
+    }
+}
+
+$widget-width: 390px;
+$widget-height: 170px;
+$widget-padding: 10px;
+
+$dial-width: 120px;
+$dial-height: 120px;
+$dial-container-width: 140px;
+
+$effective-widget-height: $widget-height - $widget-padding*2;
+
+.widget {
+    position: relative;
+    height: $effective-widget-height;
+    padding-top: $widget-padding;
+    padding-bottom: $widget-padding;
+    width: $widget-width;
+    display:block;
+    float:left;
+    border: 1px dashed #ddd;
+    .left-piece {
+        width: $dial-container-width;
+    }
+    .right-piece {
+        width: $widget-width - $dial-container-width;
+    }
+    .left-piece, .right-piece {
+        display: block;
+        float: left;
+        border: none;
+        padding: 0;
+    }
+
+    .dial-container {
+        width: $dial-width;
+        padding-top: ($effective-widget-height - $dial-height)/2;
+        padding-left: ($dial-container-width - $dial-width)/2;
+    }
+    .dial {
+        height: auto !important;
+        font-size: 16px !important;
+        border: none !important;
+        box-shadow: none !important;
+        color: #26ADE4 !important;
+    }
+
+    .query-text {
+        $right-padding: 20px;
+        $top-padding: 20px;
+
+        display:block;
+        float: right;
+        padding-top: $right-padding;
+        padding-right: $top-padding;
+        padding-left: 0px;
+
+        .CodeMirror {
+            width: $widget-width - $dial-container-width - $right-padding;
+            max-width: $widget-width - $dial-container-width - $right-padding;
+            height: $effective-widget-height - 2*$top-padding;
+            max-height: $effective-widget-height - 2*$top-padding;
+            border: 1px solid #ddd;
+        }
+        .CodeMirror-scroll {
+            overflow-y: auto;
+            height: $effective-widget-height - 2*$top-padding;
+        }
+    }
+
+    .icon-remove {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        z-index: 5;
+        opacity: 0.5;
+    }
+    .icon-remove:active {
+        opacity: 1.0;
+    }
+}
+
+#new-widget {
+    cursor: pointer;
+    .plus-button {
+        position: absolute;
+        height: $effective-widget-height/2;
+        width:  $widget-width/2;
+        margin-top: $effective-widget-height/4;
+        margin-left: $widget-width/4;
+        line-height: $effective-widget-height/2;
+        font-size: 110px;
+        text-align: center;
+        color: #ddd;
+    }
+}
+
+
+.mets-container {
+    position: relative;
+    right: 0px;
+    width: 800px;
+    margin-left = 1000px;
+    padding-top: 30px;
+}
+
+#mets-graph {
+    width: 800px;
+}

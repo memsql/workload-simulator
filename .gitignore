@@ -1,0 +1,4 @@
+*.swp
+*.pyc
+*.data
+.sass-cache

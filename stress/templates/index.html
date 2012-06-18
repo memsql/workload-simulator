@@ -1,0 +1,238 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <link href="/static/css/bootstrap.css" rel="stylesheet">
+        <link href="/static/css/bootstrap-responsive.css" rel="stylesheet">
+        <link href="/static/css/codemirror.css" rel="stylesheet">
+        <link href="/static/css/stress.css" rel="stylesheet">
+
+        <script type="text/javascript" src="/static/js/jquery-1.7.2.min.js"></script>
+
+        <!-- Syntax Highlighting -->
+        <script type="text/javascript" src="/static/js/codemirror.js"></script>
+        <script type="text/javascript" src="/static/js/mysql.js"></script>
+
+        <!-- Console -->
+        <script type="text/javascript" src="/static/js/jqconsole-2.7.min.js"></script>
+
+        <!-- Layout -->
+        <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/static/js/bootstrap-modal.js"></script>
+        <script type="text/javascript" src="/static/js/bootstrap-popover.js"></script>
+        <script type="text/javascript" src="/static/js/bootstrap-tooltip.js"></script>
+        <script type="text/javascript" src="/static/js/bootstrap-tab.js"></script>
+
+        <!-- Knobs -->
+        <script type="text/javascript" src="/static/js/jquery.knob-1.1.1.js"></script>
+
+        <!-- Graphing Framework -->
+        <script type="text/javascript" src="/static/js/highcharts.js"></script>
+
+        <!-- MemSQL Libraries -->
+        <script type="text/javascript" src="/static/js/query_dial.js"></script>
+        <script type="text/javascript" src="/static/js/query_graphs.js"></script>
+        <script type="text/javascript" src="/static/js/common.js"></script>
+        <script type="text/javascript" src="/static/js/metrics_graphs.js"></script>
+
+         <script type="text/javascript">
+            var livemode = {{ 'true' if live else 'false' }};
+            var redirected = {{ 'true' if redirected else 'false' }};
+            var g_settings = {{ settings.get_dict()|tojson|safe }};
+            g_settings["dial_max_value"] = dial_max_value;
+        </script>
+
+       {% if live %}
+        <script type="text/javascript" src="/static/js/live.js"></script>
+        {% else %}
+        <script type="text/javascript" src="/static/js/stress.js"></script>
+        {% endif %}
+    </head>
+
+    <body>
+        <div class="container-fluid topcontainer">
+            <div class="row-fluid">
+                <div class="span3" id="settings-container">
+                    <a href="#" id="settings-button"  class="btn"><i class="icon-cog"></i> Settings</a>
+
+                    {% if not live %}
+                    <a href="#" id="save-workload" class="btn"><i class="icon-download"></i> Save Workload</a>
+                    <a href="#" id="load-workload" class="btn" style="position:relative"><i class="icon-upload"></i> Load Workload<input type="file" id="load-workload-input" onchange="handleUpload(this.files)"></input></a>
+                    {% endif %}
+
+                    <form id="settings-form" class="form-horizontal well" style="position:absolute;display:none;">
+                        <fieldset>
+                            <div class="control-group">
+                                <label class="control-label" for="memsql_host">MemSQL Host:</label>
+                                <div class="controls" style="">
+                                    <input type="text" class="input-medium" id="memsql_host"  value="{{settings.memsql_host}}" placeholder="host">
+                                </div>
+                                <label class="control-label" for="memsql_port">Port:</label>
+                                <div class="controls" style="">
+                                    <input type="text" class="input-medium" id="memsql_port"  value="{{settings.memsql_port}}" placeholder="port">
+                                </div>
+                                <label class="control-label" for="memsql_user">User:</label>
+                                <div class="controls" style="">
+                                    <input type="text" class="input-medium" id="memsql_user"  value="{{settings.memsql_user}}" placeholder="user">
+                                </div>
+                                <label class="control-label" for="memsql_pass">Password:</label>
+                                <div class="controls" style="">
+                                    <input type="password" class="input-medium" id="memsql_pass" value="{{settings.memsql_pass}}" placeholder="password">
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="memsql_db" rel="tooltip" title="Database Name for Query Context">MemSQL Database:</label>
+                                <div class="controls" style="">
+                                    <input type="text" class="input-medium" id="memsql_db" style="" value="{{settings.memsql_db}}" placeholder="database name">
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="memsql_qps-number" rel="tooltip" title="Maximum Value on Each Query Dial">Maximum Dial Value:</label>
+                                <div class="controls" style="">
+                                    <span style="line-height: 20px;">
+                                        <input type="text" readonly="readonly" class="input-small" id="qps-number" style="background-color:white;"></input>
+                                        <span class="btn btn-mini" id="dial-up"><i class="icon-plus qps-button"></i></span> 
+                                        <span class="btn btn-mini" id="dial-down"><i class="icon-minus qps-button"></i></span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            {% if not live %}
+                            <div class="control-group">
+                                <label class="control-label" for="workers" rel="tooltip" title="The number of worker processes that drive the queries">Worker Processes:</label>
+                                <div class="controls" style="">
+                                    <input type="text" class="input-medium" id="workers" style="" value="{{settings.workers}}" placeholder="workers">
+                                </div>
+                            </div>
+                            {% endif %}
+                        </fieldset>
+                        <div style="text-align:right; width:100%;">
+                            <span id="settings-form-close" class="btn">Save</span>
+                        </div>
+                    </form>
+
+                </div>
+
+                <div class="span5 bigtitle">
+                    <div class="bigtitle-text">Workload Simulator</div>
+                    <div class="row-fluid" style="margin-top:30px;height:80px;">
+                        <div class="span5"></div>
+                        <div class="span2">
+                            {% if live %}
+                            <div><h1>Live Mode</h1></div>
+                            {% else %}
+                            <p class="play-button"><a class="btn btn-large"> PLAY </a> </p>
+                            {% endif %}
+                        </div>
+                        <div class="span5" style="z-index:30;position:relative;pointer-events:none">
+                            <div id="notifications" style="position:absolute; width:100%;top:0;left:0">
+                                <div class="alert alert-error notification" style="display:none;" id="empty-error">
+                                    <button class="close" data-dismiss="alert">x</button>
+                                    <span class="error-message"></span>
+                                </div>
+                                <div class="alert alert-info notification" id="loading-message" style="display:none"> 
+                                    <img src="/static/img/ajax-loader.gif"></img>&nbsp; &nbsp; <span class="message">Validating Workload</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="span4 console-container">
+                    <div id="console">
+                    </div>
+                </div>
+            </div>
+
+            <!-- TODO tabs don't work with charts b/c of display:none when hidden; instead edit css to position:-1000px -->
+            {% if liveNOTWORKING %}
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#dials" data-toggle="tab">Dials</a></li>
+                <li><a href="#metrics" data-toggle="tab">Metrics</a></li>
+            </ul>
+            {% endif %}
+
+           <div class="row-fluid content-container">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="dials">
+                        <div class="span8">
+                            {% if live %}
+                            <p><a class="btn" href="#" id="resort-queries">Sort Queries</a></p>
+                            {% else %}
+                            <p>Instructions: Enter SQL queries in the boxes below. To generate random input, use <b>@</b> for numbers and <b>^</b> for strings (no quotation marks necessary). Adjust the dial to set the number of queries per second sent to the server.</p>
+                            {% endif %}
+                            <div class="widget-container">
+                                <div class="" style="display:none" id="empty_widget">
+                                    {% if not live %}
+                                    <a class="close-widget" href="#"><i class="icon-remove"></i></a>
+                                    {% endif %}
+                                    <div class="left-piece" style="">
+                                        <div class="dial-container"> </div>
+                                    </div>
+                                    <div class="right-piece">
+                                        <div class="query-text"> </div>
+                                    </div>
+                                    <div class="query-error-message-container" style="position:absolute;width:100%;top:50%;left:0;z-index:6;">
+                                    </div>
+                                </div>
+
+                                <div class="widget" id="new-widget">
+                                    <div class="plus-button">+</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="span4 graph-container">
+                            <div id="qps-graph"></div>
+                            {% if live %}
+                            <div class="mets-container">
+                                <div id="mets-graph"></div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>    <!-- tab one -->
+
+                    {% if liveNOTWORKING %}
+                    <div class="tab-pane" id="metrics">
+                            <div id="mets-graph"></div>
+                    </div>    <!-- tab two -->
+                    {% endif %}
+                </div>    <!-- tabs contents -->
+            </div>    <!-- row fluid container -->
+
+       </div>    <!-- top container for all stuffs -->
+
+        <div class="modal fade" id="readonly-modal">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal">×</button>
+                <h3>A simulation is already running.</h3>
+            </div>
+            <div class="modal-body">
+                <p>Someone else is currently running a simulation with this [name of the thing] server instance. While you cannot run two simulations at once, you can view the other simulation by switching to live mode.
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-primary" data-dismiss="modal" id="golive-button">Go to Live Mode</a>
+            </div>
+        </div>
+
+        <div style="display:none">
+            <input type="text" class="dial" id="base-dial" 
+            data-min="0" data-max="" value="0" fgColor="000000" 
+            {% if not live %}
+            data-displayPrevious=true 
+            {% endif %}
+            />
+        </div>
+
+         <div class="modal fade" id="refresh-modal">
+            <div class="modal-header">
+                <!-- <button class="close" data-dismiss="modal">×</button> -->
+                <h3>Connection lost. Please refresh.</h3>
+            </div>
+            <div class="modal-body">
+                <p>Looks like you lost connection with the server. Please reload the page to start a new.
+            </div>
+            <div class="modal-footer">
+                <a href="javascript:location.reload(true);" class="btn btn-primary" id="golive-button">Refresh</a>
+            </div>
+        </div>
+
+   </body>
+</html>

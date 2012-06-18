@@ -1,0 +1,146 @@
+body {
+  overflow: scroll; }
+
+.topcontainer {
+  margin-top: 2%; }
+
+.bigtitle {
+  text-align: center; }
+  .bigtitle .bigtitle-text {
+    font-size: 50px;
+    line-height: 60px; }
+  .bigtitle .subtitle {
+    margin-top: 30px; }
+
+.content-container {
+  margin-top: 2%; }
+
+#load-workload-input {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0; }
+
+#settings-form {
+  z-index: 13;
+  margin-top: 5px; }
+  #settings-form .control-label[rel=tooltip] {
+    cursor: help; }
+
+#qps-button-container .qps-button {
+  cursor: pointer; }
+
+#notifications .notification {
+  max-width: 200px;
+  pointer-events: auto; }
+
+#console {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 200px;
+  background-color: black;
+  /* The inner console element. */
+  /* The cursor. */
+  /* The cursor color when the console looses focus. */
+  /* The current prompt text color */
+  /* The command history */
+  /* The text color when in input mode. */
+  /* Previously entered input. */
+  /* The text color of the output. */ }
+  #console .jqconsole {
+    padding: 10px; }
+  #console .jqconsole-cursor {
+    background-color: gray; }
+  #console .jqconsole-blurred .jqconsole-cursor {
+    background-color: #666; }
+  #console .jqconsole-prompt {
+    color: #111; }
+  #console .jqconsole-old-prompt {
+    color: #555;
+    font-weight: normal; }
+  #console .jqconsole-input {
+    color: #dd0; }
+  #console .jqconsole-old-input {
+    color: #bb0;
+    font-weight: normal; }
+  #console .jqconsole-output {
+    color: #555; }
+
+.widget {
+  position: relative;
+  height: 150px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 390px;
+  display: block;
+  float: left;
+  border: 1px dashed #ddd; }
+  .widget .left-piece {
+    width: 140px; }
+  .widget .right-piece {
+    width: 250px; }
+  .widget .left-piece, .widget .right-piece {
+    display: block;
+    float: left;
+    border: none;
+    padding: 0; }
+  .widget .dial-container {
+    width: 120px;
+    padding-top: 15px;
+    padding-left: 10px; }
+  .widget .dial {
+    height: auto !important;
+    font-size: 16px !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #26ADE4 !important; }
+  .widget .query-text {
+    display: block;
+    float: right;
+    padding-top: 20px;
+    padding-right: 20px;
+    padding-left: 0px; }
+    .widget .query-text .CodeMirror {
+      width: 230px;
+      max-width: 230px;
+      height: 110px;
+      max-height: 110px;
+      border: 1px solid #ddd; }
+    .widget .query-text .CodeMirror-scroll {
+      overflow-y: auto;
+      height: 110px; }
+  .widget .icon-remove {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    z-index: 5;
+    opacity: 0.5; }
+  .widget .icon-remove:active {
+    opacity: 1.0; }
+
+#new-widget {
+  cursor: pointer; }
+  #new-widget .plus-button {
+    position: absolute;
+    height: 75px;
+    width: 195px;
+    margin-top: 37.5px;
+    margin-left: 97.5px;
+    line-height: 75px;
+    font-size: 110px;
+    text-align: center;
+    color: #ddd; }
+
+.mets-container {
+    position: relative;
+    right: 0px;
+    width: 800px;
+    margin-left = 1000px;
+    padding-top: 30px; }
+
+#mets-graph {
+    width: 800px; }
+
