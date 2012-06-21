@@ -143,16 +143,32 @@ function updateDialValue(plus)
         return;
     }
 
+    dial_max_value += 5000 - 1;
+    dial_max_value -= (dial_max_value % 5000);
+
     if (plus) {
-        dial_max_value *= 10;    
+        dial_max_value += 5000;
     } else {
-        dial_max_value /= 10;
+        dial_max_value -= 5000;
     }
 
     if (dial_max_value == 0) {
         dial_max_value = 1;
     }
 
+    reloadDialMaxValue();
+}
+
+function setMaxDialValue(v)
+{
+    var vInt = parseInt(v);
+    if (vInt == NaN)
+    {
+        createError({errno: ER_JS, message: "Invalid integer " + v});
+        return;
+    }
+
+    dial_max_value = vInt;
     reloadDialMaxValue();
 }
 
@@ -518,6 +534,8 @@ $(document).ready(function() {
 
     $("[rel=popover]").popover({'placement' : 'right'});
     $("[rel=tooltip]").tooltip({'placement' : 'right'});
+
+    $("#qps-number").change(function() { setMaxDialValue($("#qps-number").val()); });
 
     loadCachedSettings();
     autoSave(cacheSettings);

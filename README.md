@@ -48,17 +48,17 @@ python runner
 
 + **Open http://localhost:9000 in a browser**
 
-This is the "active mode" which allows you to run queries against the MemSQL server. Let's start with a toy example.
+This is the "active mode" which allows you to run queries against the MemSQL server. Let's start with a simple example.
 
-+ **Install the toy example database and table**
++ **Install the key-value example database and table**
 
 ```
-mysql -h 127.0.0.1 -u root -P 3306 -vv < samples/toy/toy.sql
+mysql -h 127.0.0.1 -u root -P 3306 -vv < samples/key_value/key_value.json
 ```
 
-+ **Load the toy workload**
++ **Load the key-value workload**
 
-On http://localhost:9000, click Load Workload and choose the file `samples/toy/toy.json`
+On http://localhost:9000, click Load Workload and choose the file `samples/key_value/key_value.json`
 
 You will see three types of queries appear in a grid. Next to each there is a dial indicating how many times per second we will try to execute a query of that type.
 
@@ -88,11 +88,11 @@ Getting advanced
 
 + **Try creating your own workload in active mode.**
 
-Generate random numbers and strings with @ and ^, respectively. For example, to insert a row of two random integers in table t from the toy example, use the query `INSERT INTO t () VALUES (@, @);`
+Generate random numbers and strings with @ and ^, respectively. For example, to insert a random integer value in the key-value example, use the query `INSERT INTO t (k, v) VALUES (@, @);`
 
-+ **Check out the bigger sample workload**
++ **Check out the sample workload from the video (https://vimeo.com/44087431)**
 
-The sql schema is in `samples/big-oltp/big-oltp.sql`. The workload is in `samples/big-oltp/big-oltp.json`
+The sql schema is in `samples/video/video.sql`. The workload is in `samples/video/video.json`
 
 
 Troubleshooting
