@@ -117,21 +117,26 @@ function updateMetrics(mets) {
 }
 
 function reloadMetricsChart() {
-    mets_graph.series[0].data[0].update(metricsValues['array']);
-    mets_graph.series[0].data[1].update(metricsValues['hash']);
-    mets_graph.series[0].data[2].update(metricsValues['buffer']);
+    mets_graph.series[0].data[0].update(metricsValues['array'], false);
+    mets_graph.series[0].data[1].update(metricsValues['hash'], false);
+    mets_graph.series[0].data[2].update(metricsValues['buffer'], false);
 
-    mets_graph.series[1].data[0].update(metricsValues['array']);
-    mets_graph.series[1].data[1].update(metricsValues['hash']);
-    mets_graph.series[1].data[2].update(metricsValues['cached']);
-    mets_graph.series[1].data[3].update(metricsValues['table']);
+    mets_graph.series[1].data[0].update(metricsValues['array'], false);
+    mets_graph.series[1].data[1].update(metricsValues['hash'], false);
+    mets_graph.series[1].data[2].update(metricsValues['cached'], false);
+    mets_graph.series[1].data[3].update(metricsValues['table'], false);
     var other = metricsValues['buffer'] - (metricsValues['cached'] + metricsValues['table']);
-    mets_graph.series[1].data[4].update(other);
+    if (other < 0) {
+        other = 0;
+        mets_graph.series[0].data[2].update(metricsValues['cached'] + metricsValues['table'], false);
+    }
+    mets_graph.series[1].data[4].update(other, false);
+    mets_graph.redraw();
 }
 
 var metricsNames = {
     'array': 'Alloc_large_array',
-    'hash': 'Alloc_hash_bucket',
+    'hash': 'Alloc_hash_buckets',
     'buffer': 'Buffer_manager_memory',
     'cached': 'Buffer_manager_cached_memory',
     'table': 'Alloc_table_memory',

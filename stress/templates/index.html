@@ -121,6 +121,7 @@
                             <div><h1>Live Mode</h1></div>
                             {% else %}
                             <p class="play-button"><a class="btn btn-large"> PLAY </a> </p>
+                            <p class="clear-button"><a class="btn btn-large" id="clear-button"> CLEAR </a> </p>
                             {% endif %}
                         </div>
                         <div class="span5" style="z-index:30;position:relative;pointer-events:none">
@@ -197,9 +198,23 @@
                 </div>    <!-- tabs contents -->
             </div>    <!-- row fluid container -->
 
-       </div>    <!-- top container for all stuffs -->
+        </div>    <!-- top container for all stuffs -->
 
-        <div class="modal fade" id="readonly-modal">
+        <div class="modal fade" id="clear-modal">
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal">×</button>
+                <h3>Clear workload. Are you sure?</h3>
+            </div>
+            <div class="modal-body">
+                <p>This will clear all queries in the current workload. Are you sure you want to continue?</p>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-primary" data-dismiss="modal" id="cancel-clear-button">Cancel</a>
+                <a href="/clear" class="btn btn-primary" data-dismiss="modal" id="ok-clear-button">Ok</a>
+            </div>
+        </div>
+
+       <div class="modal fade" id="readonly-modal">
             <div class="modal-header">
                 <button class="close" data-dismiss="modal">×</button>
                 <h3>A simulation is already running.</h3>

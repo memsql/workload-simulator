@@ -387,7 +387,7 @@ def run_sql_command():
             p = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             stdout, stderr = p.communicate(sql_command)
             exit_code = p.returncode
-            if (string.count(stdout, '\n') <= 10):
+            if (string.count(stdout, '\n') <= 100):
                 print stdout, stderr
             else:
                 print 'Output too long to print', stderr

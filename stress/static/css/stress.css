@@ -135,12 +135,10 @@ body {
     color: #ddd; }
 
 .mets-container {
-    position: relative;
-    right: 0px;
-    width: 800px;
-    margin-left = 1000px;
     padding-top: 30px; }
 
 #mets-graph {
-    width: 800px; }
+    position: relative;
+    right: 140px;
+    width: 125%;}
 

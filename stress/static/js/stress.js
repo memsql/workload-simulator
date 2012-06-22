@@ -53,7 +53,7 @@ var playButton = new function PlayButton() {
         _this.dom.find('a').click(function() {
             if (_this.running == 0) {
                 _this.play(true);
-            } else if (_this.running = 1) {
+            } else if (_this.running == 1) {
                 _this.pause(true)
             }
         });
@@ -143,6 +143,12 @@ var playButton = new function PlayButton() {
     };
 }
 
+function clearWorkload()
+{
+    clearQueryWidgets();
+    localStorage.removeItem('workload_cache');
+}
+
 function readSessionFile(contents)
 {
     var ret = JSON.parse(contents);
@@ -195,6 +201,12 @@ $(document).ready(function() {
         args = 'settings=' + settings + '&workload=' + workload;
         window.open('/save?' + args);
     });
+
+    $("#clear-button").click(function() {
+        $("#clear-modal").modal({keyboard : false, backdrop : 'static', show: true});
+    });
+
+    $('#ok-clear-button').click(clearWorkload);
 
     var workload_s = localStorage.getItem('workload_cache');
     if (workload_s)
