@@ -24,6 +24,7 @@ ER_SYNTAX           = 1064
 ER_COL_COUNT        = 1136
 ER_TABLE_DNE        = 1146
 ER_NOT_SUPPORTED    = 1707
+ER_DEV_MEMORY       = 1720
 ER_SERVER_GONE      = 2006
 
 uncaught_errors = set([
@@ -32,6 +33,7 @@ uncaught_errors = set([
     ER_SYNTAX,          # Error in MySQL Syntax
     ER_NOT_SUPPORTED,   # Not supported by MemSQL
     ER_COL_COUNT,       # Wrong column count
+    ER_DEV_MEMORY,      # Out of Memory
     ER_COL_UNKNOWN      # Unknown column
 ])
 
