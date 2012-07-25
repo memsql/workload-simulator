@@ -1,3 +1,4 @@
-import stress.server 
+#!/usr/bin/env python
 
+import stress.server 
 stress.server.main()

@@ -1,4 +1,5 @@
 from bisect import bisect_right
+import datetime
 import logging
 import os
 import random
@@ -9,22 +10,42 @@ logger.setLevel(logging.INFO)
 STRING_TOKEN = "^"
 NUMBER_TOKEN = "@"
 
+# Can use anything after G for arbitrary tokens
+TIME_TOKEN   = "@T"
+MARK_TOKEN   = "@M"
+
+# These are ordered very specifically so that
+# if i < j, SPLIT_TOKENS[i] is not a prefix of
+# SPLIT_TOKENS[j]
+ALL_PARAM_TOKENS = ["@M", "@T", "@", "^"]
+
 # Final Types
 OLD_STRING = 0
 NEW_STRING = 1
 OLD_NUMBER = 2
 NEW_NUMBER = 3
 
-def split_and_fold(string_list, c):
+def split_and_fold(s, c):
     build = []
-    for i, s in enumerate(string_list):
-        spl = s.split(c)
-        for j, piece in enumerate(spl):
-            if j > 0:
-                build.append(c)
-            build.append(piece)
+    spl = s.split(c)
+    for i, piece in enumerate(spl):
+        if i > 0:
+            build.append(c)
+        build.append(piece)
 
     return build
+
+def tokenize_query(query):
+    string_list = [query]
+    for i, c in enumerate(ALL_PARAM_TOKENS):
+        build = []
+        for j, s in enumerate(string_list):
+            if s in ALL_PARAM_TOKENS[:i]:
+                build.append(s)
+            else:
+                build.extend(split_and_fold(s, c))
+        string_list = build
+    return string_list
 
 # Very simple heuristics. Uses old numbers with select queries
 def parse_query(qlist):
@@ -73,9 +94,18 @@ def get_random_string(prefix, n):
     s = prefix + "|" + str(ret)
     return s[:n]
 
+def get_global_marker(prefix):
+    return prefix
+
+global_time = datetime.datetime.now()
+def get_random_time():
+    global global_time
+    current_time = int("%.4d%.2d%.2d%.2d%.2d%.2d" % global_time.timetuple()[:6])
+    global_time += datetime.timedelta(seconds = 1)
+    return str(current_time)
+
 def generate_query_function(query):
-    qlist = split_and_fold([query], STRING_TOKEN)
-    qlist = split_and_fold(qlist, NUMBER_TOKEN)
+    qlist = tokenize_query(query)
     qlist = parse_query(qlist)
     build = []
     for q in qlist:
@@ -87,6 +117,10 @@ def generate_query_function(query):
             build.append("get_old_random_number(prefix)")
         elif q == NEW_NUMBER:
             build.append("get_new_random_number(prefix)")
+        elif q == TIME_TOKEN:
+            build.append("get_random_time()")
+        elif q == MARK_TOKEN:
+            build.append("get_global_marker(prefix)")
         else:
             build.append(repr(q))
     ret = ','.join(build)

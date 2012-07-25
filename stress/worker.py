@@ -7,6 +7,7 @@ import signal
 import sys
 import time
 import traceback
+import uuid
 
 from query_table import QueryTable
 
@@ -40,7 +41,7 @@ uncaught_errors = set([
 def worker(index, info_pipe, qps_array, qps_query_table, nworkers, client_arguments):
     try:
         global worker_on
-        prefix = str(os.getpid())
+        prefix = str(uuid.uuid4().int & (2**16-1))
 
         # create connection and run sanity check (show tables)
         conn = _mysql.connect(**client_arguments)
