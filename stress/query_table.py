@@ -3,6 +3,7 @@ import datetime
 import logging
 import os
 import random
+import re
 
 logger = logging.getLogger('query_table')
 logger.setLevel(logging.INFO)
@@ -27,7 +28,7 @@ NEW_NUMBER = 3
 
 def split_and_fold(s, c):
     build = []
-    spl = s.split(c)
+    spl = re.split(re.escape(c), s, flags=re.IGNORECASE)
     for i, piece in enumerate(spl):
         if i > 0:
             build.append(c)
@@ -69,7 +70,6 @@ def parse_query(qlist):
                 ret.append(q)
 
     return ret
-        
 
 def find_gt(a, x):
     'Find leftmost value greater than x'
