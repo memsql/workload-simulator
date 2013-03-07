@@ -53,7 +53,7 @@ This is the "active mode" which allows you to run queries against the MemSQL ser
 + **Install the key-value example database and table**
 
 ```
-mysql -h 127.0.0.1 -u root -P 3306 -vv < samples/key_value/key_value.json
+mysql -h 127.0.0.1 -u root -P 3306 -vv < workloads/key_value/key_value.sql
 ```
 
 + **Load the key-value workload**
