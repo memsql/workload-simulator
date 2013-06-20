@@ -5,7 +5,7 @@ The MemSQL Workload Simulator lets you simulate running thousands of queries per
 live mode, which lets you monitor the performance of a running MemSQL instance.
 
 This project is under active, continuous development. Expect updates to come frequently as the feature set is built out. If you have suggestions for features, feel free to post them to the issues section of this repository or
-implement them and submit them as a pull request. If you build an interesting workload, we would love to include it in the samples directory.
+implement them and submit them as a pull request. If you build an interesting workload, we would love to include it in the workloads directory.
 
 
 Requirements
@@ -58,7 +58,7 @@ mysql -h 127.0.0.1 -u root -P 3306 -vv < workloads/key_value/key_value.sql
 
 + **Load the key-value workload**
 
-On http://localhost:9000, click Load Workload and choose the file `samples/key_value/key_value.json`
+On http://localhost:9000, click Load Workload and choose the file `workloads/key_value/key_value.json`
 
 You will see three types of queries appear in a grid. Next to each there is a dial indicating how many times per second we will try to execute a query of that type.
 
@@ -92,7 +92,7 @@ Generate random numbers and strings with @ and ^, respectively. For example, to 
 
 + **Check out the sample workload from the video (https://vimeo.com/44087431)**
 
-The sql schema is in `samples/video/video.sql`. The workload is in `samples/video/video.json`
+The sql schema is in `workloads/video/video.sql`. The workload is in `workloads/video/video.json`
 
 
 Troubleshooting
