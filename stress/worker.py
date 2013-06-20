@@ -87,7 +87,14 @@ def worker(index, info_pipe, qps_array, qps_query_table, nworkers, client_argume
                         time.sleep(sleep_time)
             except KeyboardInterrupt as e:
                 logger.debug("WAITING TO SEND PAUSED")
-                conn.store_result()
+                try:
+                    conn.store_result()
+                except _mysql.MySQLError as (n,m):
+                    if n == 0:
+                        conn.close()
+                        conn = _mysql.connect(**client_arguments)
+                    else:
+                        raise
     except Exception as e:
         logger.error("Exception in child process %d: %s" % (index, str(e)))
         logger.debug(traceback.format_exc())
